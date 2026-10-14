@@ -1,0 +1,134 @@
+/* ==========================================================================
+   Secret Communication System - Master Stylesheet
+   Theme: High-Tech Security Dark Navy & Slate Accent Palette
+   ========================================================================== */
+
+:root {
+    --bg-dark: #0b1329;
+    --card-dark: #131d3b;
+    --navbar-dark: #080e1e;
+    --accent-blue: #0084ff;
+    --accent-cyan: #00d2ff;
+    --border-color: #202e5c;
+    --text-main: #f0f4f8;
+    --text-muted: #9aa5b8;
+    --success-green: #28a745;
+    --danger-red: #dc3545;
+    --warning-yellow: #ffc107;
+}
+
+/* Global Body & Layout */
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Top Navigation Bar */
+.navbar-custom {
+    background-color: var(--navbar-dark);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+}
+
+.nav-link {
+    color: var(--text-muted);
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+}
+
+.nav-link:hover, 
+.nav-link.active {
+    color: var(--accent-cyan) !important;
+}
+
+/* Reusable Professional Cards */
+.card-custom {
+    background-color: var(--card-dark) !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-custom p,
+.card-custom span,
+.card-custom li,
+.card-custom label {
+    color: var(--text-main);
+}
+
+/* Custom Gradient Action Buttons */
+.btn-primary-custom {
+    background: linear-gradient(135deg, #0066cc, #0099ff);
+    border: none;
+    color: #ffffff;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-primary-custom:hover {
+    background: linear-gradient(135deg, #0052a3, #0084ff);
+    color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 132, 255, 0.4);
+}
+
+/* Dark Data Tables */
+.table-dark-custom {
+    background-color: var(--card-dark);
+    color: var(--text-main);
+    border-color: var(--border-color);
+}
+
+.table-dark-custom th {
+    border-bottom: 2px solid var(--border-color);
+    color: var(--accent-cyan);
+}
+
+/* Security Verification Badges */
+.badge-verified {
+    background-color: rgba(40, 167, 69, 0.2);
+    color: var(--success-green);
+    border: 1px solid var(--success-green);
+}
+
+.badge-pending {
+    background-color: rgba(255, 193, 7, 0.2);
+    color: var(--warning-yellow);
+    border: 1px solid var(--warning-yellow);
+}
+
+.badge-denied {
+    background-color: rgba(220, 53, 69, 0.2);
+    color: var(--danger-red);
+    border: 1px solid var(--danger-red);
+}
+
+/* Form Controls & Inputs */
+.form-control,
+.form-select {
+    border-color: var(--border-color);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 0.25rem rgba(0, 132, 255, 0.25);
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--navbar-dark);
+    padding: 1.5rem 0;
+    color: var(--text-muted);
+}

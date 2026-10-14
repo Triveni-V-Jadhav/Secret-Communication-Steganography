@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Unit IV & V: Information Retrieval & Language Models - SecretComm AI{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="text-light fw-bold"><i class="bi bi-search text-warning me-2"></i>Second Syllabus Unit IV & V: Language Models & Web Retrieval</h2>
+    <p class="text-muted">Unigram/Bigram multinomial word distributions, Query-Likelihood ranking, PageRank link graph analysis, and MapReduce indexing.</p>
+</div>
+
+<!-- Query-Likelihood Ranking -->
+<div class="card card-custom p-4 mb-4">
+    <h4 class="text-info mb-3"><i class="bi bi-file-earmark-text me-2"></i>Unit IV: Language Model Query-Likelihood Ranking</h4>
+    <form method="GET" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="q" value="{{ query }}" class="form-control bg-dark text-light border-secondary" placeholder="Search knowledge corpus...">
+            <button class="btn btn-primary-custom" type="submit">Rank Documents</button>
+        </div>
+    </form>
+    
+    <div class="table-responsive">
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th>Doc ID</th>
+                    <th>Document Text Snippet</th>
+                    <th>Log-Likelihood Score \( \log P(Q \mid D) \)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for did, score in lm_scores.items() %}
+                <tr>
+                    <td><strong>{{ did }}</strong></td>
+                    <td>{{ docs[did] }}</td>
+                    <td><span class="badge bg-primary fs-6">{{ score }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- PageRank & MapReduce -->
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card card-custom p-4 h-100">
+            <h4 class="text-warning mb-3"><i class="bi bi-diagram-3-fill me-2"></i>Unit V: PageRank Link-Based Scoring</h4>
+            <p class="text-muted small">Power iteration on hyperlink transition matrix \(d=0.85\):</p>
+            <ul class="list-group list-group-flush bg-transparent">
+                {% for node, pr in pagerank.items() %}
+                <li class="list-group-item bg-transparent text-light border-secondary d-flex justify-content-between">
+                    <span><i class="bi bi-link-45deg text-info me-2"></i>Node: {{ node }}</span>
+                    <span class="badge bg-warning text-dark fs-6">{{ pr }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="card card-custom p-4 h-100">
+            <h4 class="text-success mb-3"><i class="bi bi-shuffle me-2"></i>Unit V: MapReduce Parallel Pipeline Simulation</h4>
+            <p class="text-muted small">Execution across Map &rarr; Shuffle &rarr; Reduce stages:</p>
+            <div class="p-3 bg-dark border border-secondary rounded mb-3">
+                <div class="text-light small">Pairs Mapped: <strong class="text-info">{{ mapreduce.mapped_pairs_count }}</strong></div>
+                <div class="text-light small">Unique Terms Reduced: <strong class="text-success">{{ mapreduce.unique_terms_reduced }}</strong></div>
+            </div>
+            <h6 class="text-light small">Sample Inverted Index Postings:</h6>
+            <div class="font-monospace small text-info bg-dark p-2 rounded">
+                {% for term, postings in mapreduce.sample_index.items() %}
+                    <div>{{ term }} &rarr; {{ postings }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

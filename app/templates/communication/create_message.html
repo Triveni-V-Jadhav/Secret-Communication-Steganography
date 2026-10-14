@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Create Secret Package - SecretComm AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card card-custom p-4">
+            <h3 class="text-info mb-3"><i class="bi bi-shield-plus me-2"></i>Generate Multi-Image Secret Package</h3>
+            <p class="text-muted small">
+                Your message will be encrypted using <strong>AES-256-GCM</strong>. The ciphertext will be segmented 
+                into <strong>SEC1 binary chunk frames</strong> and embedded across your uploaded lossless cover images (PNG).
+            </p>
+            
+            <form method="POST" enctype="multipart/form-data" action="{{ url_for('communication.create_message') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                
+                <div class="mb-3">
+                    <label class="form-label text-light">Package Title</label>
+                    <input type="text" name="title" class="form-control bg-dark text-light border-secondary" placeholder="e.g. Confidential Project Architecture" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label text-light">Select Intended Recipient</label>
+                    <select name="recipient_id" class="form-select bg-dark text-light border-secondary">
+                        <option value="">-- Broadcast / Any Authorized Recipient --</option>
+                        {% for u in users %}
+                            <option value="{{ u.id }}">{{ u.username }} ({{ u.email }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label text-light">Confidential Secret Message</label>
+                    <textarea name="secret_message" rows="4" class="form-control bg-dark text-light border-secondary" placeholder="Type your highly confidential message here..." required></textarea>
+                    <div class="form-text text-muted">Never stored plaintext in database. Kept strictly inside encrypted stego-chunks.</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label text-light">Symmetric Encryption Passphrase</label>
+                    <input type="password" name="passphrase" class="form-control bg-dark text-light border-secondary" placeholder="Enter high-entropy passphrase known to recipient" required>
+                    <div class="form-text text-info">Derived using PBKDF2-HMAC-SHA256 (100,000 iterations) for AES-256-GCM key.</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label text-light">Upload Cover Images (PNG/BMP Lossless)</label>
+                    <input type="file" name="cover_images" multiple accept=".png,.bmp" class="form-control bg-dark text-light border-secondary" required>
+                    <div class="form-text text-warning">
+                        <i class="bi bi-info-circle me-1"></i> Tip: Select 2 or more PNG images to split the secret payload across multiple files!
+                    </div>
+                </div>
+                
+                <div class="mb-4 form-check">
+                    <input type="checkbox" name="require_face_auth" id="requireFace" class="form-check-input">
+                    <label for="requireFace" class="form-check-label text-light">
+                        <strong>Enforce Biometric Face Verification:</strong> Recipient must verify their facial identity before payload decryption is permitted.
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary-custom w-100 py-2">
+                    <i class="bi bi-cpu me-2"></i>Encrypt & Embed Across Multi-Images
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Unit IV: RNN & LSTM - SecretComm AI{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="text-light fw-bold"><i class="bi bi-activity text-info me-2"></i>Unit IV: Recurrent Neural Networks & LSTM</h2>
+    <p class="text-muted">Computational graph unfolding, sequence dependency modeling, and LSTM gating mechanisms.</p>
+</div>
+
+<!-- Section A & B: Unfolding Computational Graphs -->
+<div class="card card-custom p-4 mb-4">
+    <h4 class="text-info mb-3"><i class="bi bi-diagram-2 me-2"></i>A & B. Unfolding Computational Graphs</h4>
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <p class="text-light">
+                An unrolled RNN computes representations across discrete time steps \(t \in \{1, \dots, T\}\). 
+                Information flows forward through the hidden state vector \(h_t\), parametrized by recurrent weight matrices:
+            </p>
+            <div class="p-3 bg-dark border border-secondary rounded font-monospace text-info mb-3">
+                h_t = tanh(W_xh &middot; x_t + W_hh &middot; h_{t-1} + b_h)<br>
+                y_t = softmax(W_hy &middot; h_t + b_y)
+            </div>
+            <p class="text-muted small">
+                <strong>Backpropagation Through Time (BPTT):</strong> Errors at step \(T\) propagate backward across previous timesteps.
+                Repeated multiplications by \(W_{hh}\) cause the gradient to either decay exponentially <em>(vanishing gradient)</em>
+                or explode <em>(exploding gradient)</em>. LSTMs solve vanishing gradients via constant error carousels (cell states).
+            </p>
+        </div>
+        <div class="col-lg-5 text-center">
+            <div class="p-3 border border-secondary rounded bg-dark">
+                <span class="badge bg-primary mb-2">Unrolled Graph Architecture</span>
+                <div class="d-flex justify-content-around text-info fw-bold py-3">
+                    <div>x₁ &rarr; [h₁] &rarr; y₁<br>&darr;</div>
+                    <div>x₂ &rarr; [h₂] &rarr; y₂<br>&darr;</div>
+                    <div>x₃ &rarr; [h₃] &rarr; y₃</div>
+                </div>
+                <small class="text-muted">Recurrent Weight Matrix \(W_{hh}\) Shared Across All Time Steps</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Section C: Event Sequence Prediction -->
+<div class="card card-custom p-4 mb-4">
+    <h4 class="text-info mb-3"><i class="bi bi-play-circle me-2"></i>C. Sequence Event Predictor</h4>
+    <form method="POST" class="mb-3">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="row g-2">
+            <div class="col-md-9">
+                <input type="text" name="events" value="{{ events_str }}" class="form-control bg-dark text-light border-secondary" placeholder="Comma separated events">
+                <small class="text-muted">Supported events: AUTH_LOGIN, ENCODE_INIT, CHUNK_DOWNLOAD, RECIPIENT_DECODE, FACE_VERIFY, MESSAGE_READ</small>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary-custom w-100">Step RNN Forward</button>
+            </div>
+        </div>
+    </form>
+    
+    <div class="alert alert-info py-2">
+        <strong>Predicted Next Transition:</strong> <span class="badge bg-success fs-6 ms-2">{{ rnn_result.predicted_next_event }}</span>
+        <span class="ms-3 text-light">(Confidence: {{ rnn_result.confidence }})</span>
+    </div>
+</div>
+
+<!-- Section F, G, H: LSTM Gating & Self-Driving Cars Trajectory -->
+<div class="card card-custom p-4 mb-4">
+    <h4 class="text-success mb-3"><i class="bi bi-car-front me-2"></i>F, G, H. LSTM Gating & Self-Driving Cars Case Study</h4>
+    <p class="text-light">
+        Demonstration of an LSTM modeling time-series vehicle sensors (speed, steering angle, acceleration) 
+        to forecast 2D vehicle trajectory coordinates \((x, y)\) and lane alignment.
+    </p>
+    
+    <div class="table-responsive">
+        <table class="table table-dark table-hover">
+            <thead>
+                <tr>
+                    <th>Time Step</th>
+                    <th>Speed (m/s)</th>
+                    <th>Steering (rad)</th>
+                    <th>Forget Gate \(f_t\)</th>
+                    <th>Input Gate \(i_t\)</th>
+                    <th>Predicted Displacement (X, Y)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in trajectory.trajectory %}
+                <tr>
+                    <td>{{ item.step }}</td>
+                    <td>{{ item.speed }}</td>
+                    <td>{{ item.steering }}</td>
+                    <td><span class="text-warning">{{ trajectory.gate_activations[loop.index0].forget_gate|round(3) }}</span></td>
+                    <td><span class="text-info">{{ trajectory.gate_activations[loop.index0].input_gate|round(3) }}</span></td>
+                    <td><code>({{ item.predicted_x }}, {{ item.predicted_y }})</code></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="alert alert-secondary py-2 small mb-0">
+        <i class="bi bi-info-circle me-1"></i> Notice: The forget gate \(f_t\) selectively retains long-term momentum, preventing vanishing gradients while dampening high-frequency sensor noise.
+    </div>
+</div>
+{% endblock %}

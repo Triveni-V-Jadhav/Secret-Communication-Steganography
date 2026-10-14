@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Extract & Decrypt - SecretComm AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card card-custom p-4">
+            <h3 class="text-info mb-3"><i class="bi bi-key-fill me-2"></i>Multi-Image Payload Extraction & Decryption</h3>
+            <p class="text-light small opacity-75">
+                Upload all stego-images belonging to the communication package. The application will scan 
+                LSB bit planes, extract versioned <strong>SEC1 binary chunks</strong>, reconstruct the ciphertext, 
+                and decrypt after cryptographic authentication tag and biometric verification.
+            </p>
+            
+            <form method="POST" enctype="multipart/form-data" action="{{ url_for('communication.extract_message') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                
+                <div class="mb-3">
+                    <label class="form-label text-light">Upload Received Stego Images (Select All Chunks)</label>
+                    <input type="file" name="stego_images" multiple accept=".png,.bmp" class="form-control bg-dark text-light border-secondary" required>
+                    <div class="form-text text-muted">Order is not required; binary headers reconstruct sequence automatically.</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label text-light">Symmetric Decryption Passphrase</label>
+                    <input type="password" name="passphrase" class="form-control bg-dark text-light border-secondary" placeholder="Enter sender-shared passphrase" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="form-label text-light">Live Biometric Face Probe (If Required by Package)</label>
+                    <input type="file" name="probe_face_image" accept=".png,.jpg,.jpeg" class="form-control bg-dark text-light border-secondary">
+                    <div class="form-text text-info">Optional if the message does not enforce biometric verification.</div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary-custom w-100 py-2">
+                    <i class="bi bi-unlock-fill me-2"></i>Reconstruct, Verify & Decrypt
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

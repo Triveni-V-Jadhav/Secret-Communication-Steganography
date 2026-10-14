@@ -1,0 +1,39 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# Environment variables and secrets
+.env
+!.env.example
+
+# Database files
+instance/
+*.sqlite3
+*.db
+
+# Temporary and uploaded storage files
+storage/stego/*
+storage/stego_images/*
+storage/temp/*
+!storage/stego/.gitkeep
+!storage/temp/.gitkeep
+
+# Testing and cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE and OS files
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+Desktop.ini
+.DS_Store

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Secret Communication AI System{% endblock %}
+
+{% block content %}
+<div class="row align-items-center py-5">
+    <div class="col-lg-7">
+        <h1 class="display-4 fw-bold text-info mb-3">
+            Multi-Image Steganography & Biometric Face Verification
+        </h1>
+        <p class="lead text-light">
+            A state-of-the-art secure communication architecture. Encrypt confidential messages using 
+            <strong>AES-256-GCM</strong>, distribute payloads across multiple lossless cover images via 
+            <strong>LSB steganography</strong>, and enforce dual-factor verification with privacy-conscious 
+            <strong>facial biometrics</strong>.
+        </p>
+        <div class="d-flex gap-3 mt-4">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('communication.dashboard') }}" class="btn btn-primary-custom btn-lg px-4">
+                    <i class="bi bi-speedometer2 me-2"></i>Go to Dashboard
+                </a>
+                <a href="{{ url_for('communication.create_message') }}" class="btn btn-outline-info btn-lg px-4">
+                    <i class="bi bi-envelope-plus me-2"></i>New Secret Package
+                </a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}" class="btn btn-primary-custom btn-lg px-4">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Secure Login
+                </a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-outline-info btn-lg px-4">
+                    <i class="bi bi-person-plus me-2"></i>Register Account
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-lg-5 text-center mt-4 mt-lg-0">
+        <div class="card card-custom p-4 text-start">
+            <h5 class="text-info border-bottom pb-2 border-secondary"><i class="bi bi-shield-check me-2"></i>Key Security Protocols</h5>
+            <ul class="list-unstyled mt-3 mb-0">
+                <li class="mb-2 text-light"><i class="bi bi-check-circle-fill text-success me-2"></i> Authenticated AES-GCM-256 Payload Encryption</li>
+                <li class="mb-2 text-light"><i class="bi bi-check-circle-fill text-success me-2"></i> 32-Byte Structured SEC1 Binary Chunk Headers</li>
+                <li class="mb-2 text-light"><i class="bi bi-check-circle-fill text-success me-2"></i> Multi-Image Payload Chunk Assembly & Validation</li>
+                <li class="mb-2 text-light"><i class="bi bi-check-circle-fill text-success me-2"></i> Zero Plaintext Persisted in Database Storage</li>
+                <li class="mb-2 text-light"><i class="bi bi-check-circle-fill text-success me-2"></i> Consented Biometric Facial Verification Template</li>
+                <li class="mb-0 text-light"><i class="bi bi-check-circle-fill text-success me-2"></i> Comprehensive Unit IV, V, VI Deep Learning Labs</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

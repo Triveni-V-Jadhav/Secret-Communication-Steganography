@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Enroll Face - SecretComm AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-7">
+        <div class="card card-custom p-4">
+            <h3 class="text-info mb-3"><i class="bi bi-camera me-2"></i>Consent-Based Biometric Face Enrollment</h3>
+            <p class="text-muted small">
+                In strict compliance with privacy standards, <strong>raw images are never stored permanently</strong>. 
+                The system normalizes the detected face using OpenCV Haar Cascades and extracts an irreversible 
+                <strong>128-dimensional spatial-gradient feature vector</strong> used solely for secondary identity verification.
+            </p>
+            
+            <form method="POST" enctype="multipart/form-data" action="{{ url_for('auth.enroll_face') }}">
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-3">
+                    {{ form.face_image.label(class="form-label text-light") }}
+                    {{ form.face_image(class="form-control bg-dark text-light border-secondary", accept=".png,.jpg,.jpeg") }}
+                    <div class="form-text text-muted">Upload a clear, front-facing photograph with even lighting and no face coverings.</div>
+                </div>
+                
+                <div class="mb-4 form-check">
+                    {{ form.consent(class="form-check-input") }}
+                    <label class="form-check-label text-light small" for="consent">
+                        <strong>Mandatory Privacy Consent:</strong> I voluntarily consent to the generation and encrypted storage of a mathematical biometric template for identity verification. I understand I can delete this template at any time from my profile.
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn btn-primary-custom w-100 py-2">
+                    <i class="bi bi-shield-check me-2"></i>Extract & Save Biometric Template
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

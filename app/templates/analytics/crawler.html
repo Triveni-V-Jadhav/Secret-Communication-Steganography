@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Safe Web Crawler - SecretComm AI{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="text-light fw-bold"><i class="bi bi-globe text-info me-2"></i>Unit V: Safe Web Crawler & HTML Parser</h2>
+    <p class="text-muted">Safe, local-first web retrieval pipeline with strict SSRF defenses and BeautifulSoup parsing.</p>
+</div>
+
+<div class="card card-custom p-4 mb-4">
+    <h5 class="text-info mb-3">Target URL Verification</h5>
+    <form method="POST">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="input-group">
+            <input type="text" name="url" value="{{ url }}" class="form-control bg-dark text-light border-secondary" placeholder="https://example.com">
+            <button class="btn btn-primary-custom" type="submit">Execute Safe Crawl</button>
+        </div>
+        <div class="form-text text-muted mt-2">
+            <strong>Security Controls:</strong> Strictly prohibits internal IP ranges (127.0.0.1, 10.0.0.0/8, 192.168.0.0/16, AWS/GCP metadata) and enforces trusted domain validation.
+        </div>
+    </form>
+</div>
+
+{% if crawl_result %}
+<div class="card card-custom p-4">
+    <h5 class="text-success mb-3"><i class="bi bi-check-circle me-2"></i>Parsed Document Structure</h5>
+    <div class="mb-3">
+        <span class="text-muted small">Document Title:</span>
+        <div class="fs-5 text-light fw-bold">{{ crawl_result.title }}</div>
+    </div>
+    <div class="mb-3">
+        <span class="text-muted small">Extracted Text Content:</span>
+        <div class="p-3 bg-dark border border-secondary rounded text-light small">{{ crawl_result.text }}</div>
+    </div>
+    <div>
+        <span class="text-muted small">Discovered Outbound Links:</span>
+        <ul class="list-group list-group-flush bg-transparent mt-1">
+            {% for link in crawl_result.links %}
+            <li class="list-group-item bg-transparent text-info border-secondary p-1 small">
+                <i class="bi bi-link-45deg me-1"></i> {{ link }}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

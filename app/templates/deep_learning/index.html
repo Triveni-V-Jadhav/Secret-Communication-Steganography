@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Deep Learning Laboratory - SecretComm AI{% endblock %}
+
+{% block content %}
+<div class="mb-4">
+    <h2 class="text-light fw-bold"><i class="bi bi-cpu text-info me-2"></i>Deep Learning Laboratory (MCA Units IV & V)</h2>
+    <p class="text-muted">Interactive experimental workstations demonstrating neural network sequence modeling, autoencoder manifold reconstruction, and cyber anomaly detection.</p>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card card-custom p-4 h-100">
+            <h4 class="text-info"><i class="bi bi-activity me-2"></i>Unit IV: RNN & LSTM</h4>
+            <p class="text-muted small">
+                Unrolled computational graphs, hidden recurrence, forget/input/output gates, 
+                and time-series sensor trajectory modeling (Self-Driving Cars Case Study).
+            </p>
+            <a href="{{ url_for('deep_learning.rnn_lstm_demo') }}" class="btn btn-outline-info mt-auto">
+                Launch RNN / LSTM Lab <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card card-custom p-4 h-100">
+            <h4 class="text-success"><i class="bi bi-diagram-3 me-2"></i>Unit V: Autoencoders</h4>
+            <p class="text-muted small">
+                Bottleneck image compression, latent code spaces, Denoising Autoencoder manifold 
+                restoration, and network traffic cyber anomaly detection.
+            </p>
+            <a href="{{ url_for('deep_learning.autoencoder_demo') }}" class="btn btn-outline-success mt-auto">
+                Launch Autoencoder Lab <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card card-custom p-4 h-100">
+            <h4 class="text-warning"><i class="bi bi-search me-2"></i>Unit IV/V: IR & LMs</h4>
+            <p class="text-muted small">
+                Language models for information retrieval, Query-Likelihood ranking, PageRank link 
+                analysis, and MapReduce indexing simulation.
+            </p>
+            <a href="{{ url_for('deep_learning.ir_demo') }}" class="btn btn-outline-warning mt-auto">
+                Launch IR & LM Lab <i class="bi bi-arrow-right ms-1"></i>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

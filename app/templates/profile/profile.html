@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}User Profile - SecretComm AI{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card card-custom p-4 mb-4">
+            <h3 class="text-info mb-3"><i class="bi bi-person-badge me-2"></i>User Profile</h3>
+            
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <label class="text-muted small">Username</label>
+                    <div class="text-light fw-bold fs-5">{{ user.username }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-muted small">Email Address</label>
+                    <div class="text-light fw-bold fs-5">{{ user.email }}</div>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-muted small">Role</label>
+                    <div><span class="badge bg-secondary">{{ user.role }}</span></div>
+                </div>
+                <div class="col-md-6">
+                    <label class="text-muted small">Member Since</label>
+                    <div class="text-light">{{ user.created_at.strftime('%Y-%m-%d') }}</div>
+                </div>
+            </div>
+            
+            <hr class="border-secondary">
+            
+            <h4 class="text-light mb-3"><i class="bi bi-camera me-2"></i>Biometric Facial Verification Status</h4>
+            {% if user.face_profile %}
+                <div class="alert alert-success d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong><i class="bi bi-check-circle me-1"></i> Biometric Profile Enrolled</strong>
+                        <div class="small">Algorithm: {{ user.face_profile.algorithm_version }} | Enrolled: {{ user.face_profile.enrolled_at.strftime('%Y-%m-%d %H:%M') }}</div>
+                    </div>
+                    <form method="POST" action="{{ url_for('auth.delete_face_profile') }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm" onclick="return confirm('Permanently remove biometric template?');">
+                            <i class="bi bi-trash me-1"></i> Remove Template
+                        </button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="alert alert-warning d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong><i class="bi bi-exclamation-triangle me-1"></i> No Biometric Profile Enrolled</strong>
+                        <div class="small">Enrollment is optional and consent-based. Required only if messages enforce facial identity verification.</div>
+                    </div>
+                    <a href="{{ url_for('auth.enroll_face') }}" class="btn btn-warning btn-sm text-dark fw-bold">
+                        <i class="bi bi-camera me-1"></i> Enroll Now
+                    </a>
+                </div>
+            {% endif %}
+            
+            <div class="mt-4">
+                <a href="{{ url_for('auth.change_password') }}" class="btn btn-outline-info">
+                    <i class="bi bi-shield-lock me-1"></i> Change Password
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
